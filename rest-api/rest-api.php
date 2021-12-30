@@ -1,63 +1,178 @@
 <?php
-if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
-class Disciple_Tools_Plugin_Starter_Template_Endpoints
+/**
+ * DT_List_Email_Sender_Endpoints
+ *
+ * @class      DT_List_Email_Sender_Endpoints
+ * @version    0.1.0
+ * @since      0.1.0
+ * @package    Disciple.Tools
+ * @author     Disciple.Tools
+ */
+
+if ( !defined( 'ABSPATH' ) ) {
+    exit; // Exit if accessed directly
+}
+
+/**
+ * Class DT_List_Email_Sender_Endpoints
+ */
+class DT_List_Email_Sender_Endpoints
 {
     /**
-     * @todo Set the permissions your endpoint needs
-     * @link https://github.com/DiscipleTools/Documentation/blob/master/theme-core/capabilities.md
-     * @var string[]
+     * DT_List_Email_Sender_Endpoints The single instance of DT_List_Email_Sender_Endpoints.
+     *
+     * @var     object
+     * @access    private
+     * @since     0.1.0
      */
-    public $permissions = [ 'access_contacts', 'dt_all_access_contacts', 'view_project_metrics' ];
-
+    private static $_instance = null;
 
     /**
-     * @todo define the name of the $namespace
-     * @todo define the name of the rest route
-     * @todo defne method (CREATABLE, READABLE)
-     * @todo apply permission strategy. '__return_true' essentially skips the permission check.
+     * Main DT_List_Email_Sender_Endpoints Instance
+     * Ensures only one instance of DT_List_Email_Sender_Endpoints is loaded or can be loaded.
+     *
+     * @since 0.1.0
+     * @static
+     * @return DT_List_Email_Sender_Endpoints instance
      */
-    //See https://github.com/DiscipleTools/disciple-tools-theme/wiki/Site-to-Site-Link for outside of wordpress authentication
-    public function add_api_routes() {
-        $namespace = 'disciple-tools-plugin-starter-template/v1';
-
-        register_rest_route(
-            $namespace, '/endpoint', [
-                'methods'  => "GET",
-                'callback' => [ $this, 'endpoint' ],
-                'permission_callback' => function( WP_REST_Request $request ) {
-                    return $this->has_permission();
-                },
-            ]
-        );
-    }
-
-
-    public function endpoint( WP_REST_Request $request ) {
-
-        // @todo run your function here
-
-        return true;
-    }
-
-    private static $_instance = null;
     public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
         return self::$_instance;
     } // End instance()
+
+    /**
+     * Constructor function.
+     *
+     * @access  public
+     * @since   0.1.0
+     */
     public function __construct() {
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+    } // End __construct()
+
+    public function add_api_routes() {
+        $version = '1';
+        $namespace = 'dt/v' . $version;
+
+        $arg_schemas = [
+            "post_type" => [
+                "description" => "The post type",
+                "type" => 'string',
+                "required" => true,
+                "validate_callback" => [ 'Disciple_Tools_Posts_Endpoints', "prefix_validate_args_static" ]
+            ],
+        ];
+
+        register_rest_route(
+            $namespace, '/(?P<post_type>\w+)/bulk_message', [
+                [
+                    "methods"  => "POST",
+                    "callback" => [ $this, 'bulk_message' ],
+                    "args" => [
+                        "post_type" => $arg_schemas["post_type"],
+                    ],
+                    'permission_callback' => '__return_true',
+                ]
+            ]
+        );
+
     }
-    public function has_permission(){
-        $pass = false;
-        foreach ( $this->permissions as $permission ){
-            if ( current_user_can( $permission ) ){
-                $pass = true;
+
+    /**
+     * Get tract from submitted address
+     *
+     * @param  WP_REST_Request $request
+     *
+     * @access public
+     * @since  0.1.0
+     * @return string|WP_Error|array The contact on success
+     */
+    public function bulk_message( WP_REST_Request $request ) {
+        $params = $request->get_params();
+
+        if ( ! isset( $params['root'], $params['type'], $params['post_type'] ) ) {
+            return new WP_Error( __METHOD__, "Missing essential params", [ 'status' => 400 ] );
+        }
+
+        if ( ! isset( $params['post_ids'] ) || empty( $params['post_ids'] ) ) {
+            return new WP_Error( __METHOD__, "Missing list of post ids", [ 'status' => 400 ] );
+        }
+
+        $magic = new DT_Magic_URL( $params['root'] );
+        $type = $magic->list_types();
+        if ( ! isset( $type[$params['type']] ) ) {
+            return new WP_Error( __METHOD__, "Magic link type not found", [ 'status' => 400 ] );
+        } else {
+            $name = $type[$params['type']]['name'] ?? '';
+            $meta_key = $type[$params['type']]['meta_key'];
+        }
+
+        $errors = [];
+        $success = [];
+
+        foreach ( $params['post_ids'] as $post_id ) {
+            $post_record = DT_Posts::get_post( $params['post_type'], $post_id, true, true );
+            if ( is_wp_error( $post_record ) || empty( $post_record ) ){
+                $errors[$post_id] = 'no permission';
+                continue;
+            }
+
+            // check if email exists to send to
+            if ( ! isset( $post_record['contact_email'][0] ) ) {
+                $errors[$post_id] = 'no email';
+                continue;
+            }
+
+            // check if magic key exists, or needs created
+            if ( ! isset( $post_record[$meta_key] ) ) {
+                $key = dt_create_unique_key();
+                update_post_meta( $post_id, $meta_key, $key );
+                $link = DT_Magic_URL::get_link_url( $params['root'], $params['type'], $key );
+            }
+            else {
+                $link = DT_Magic_URL::get_link_url( $params['root'], $params['type'], $post_record[$meta_key] );
+            }
+
+            $note = '';
+            if ( isset( $params['note'] ) && ! empty( $params['note'] ) ) {
+                $note = $params['note'];
+            }
+
+            // build email
+            $email = $post_record['contact_email'][0]['value'];
+            $subject = $name;
+            $message_plain_text = $note . '
+
+'           . $name . ': ' . $link;
+
+            // send email
+            $sent = dt_send_email( $email, $subject, $message_plain_text );
+            if ( is_wp_error( $sent ) || ! $sent ) {
+                $errors[$post_id] = $sent;
+            }
+            else {
+                $success[$post_id] = $sent;
+                dt_activity_insert( [
+                    'action'            => 'sent_app_link',
+                    'object_type'       => $params['post_type'],
+                    'object_subtype'    => 'email',
+                    'object_id'         => $post_id,
+                    'object_name'       => $post_record['title'],
+                    'object_note'       => $name . ' (app) sent to ' . $email,
+                ] );
             }
         }
-        return $pass;
+
+        return [
+            'total_unsent' => ( ! empty( $success ) ) ? count( $errors ) : 0,
+            'total_sent' => ( ! empty( $success ) ) ? count( $success ) : 0,
+            'errors' => $errors,
+            'success' => $success
+        ];
     }
+
 }
-Disciple_Tools_Plugin_Starter_Template_Endpoints::instance();
+DT_List_Email_Sender_Endpoints::instance();
