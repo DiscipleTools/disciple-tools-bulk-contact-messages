@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/DiscipleTools/disciple-tools-bulk-contact-messages.svg?branch=master)](https://travis-ci.com/DiscipleTools/disciple-tools-bulk-contact-messages)
+[![Build Status](https://travis-ci.com/DiscipleTools/disciple-tools-bulk-contact-messaging.svg?branch=master)](https://travis-ci.com/DiscipleTools/disciple-tools-bulk-contact-messaging)
 
 # Disciple.Tools - List Email Sender
 
@@ -30,7 +30,7 @@ __This plugin is for developers__ who want to extend the Disciple.Tools system f
  1. Wordpress code style requirements. ```phpcs.xml```
  1. PHP Code Sniffer support (composer) @use ```/vendor/bin/phpcs``` and ```/vendor/bin/phpcbf```
  1. Travis Continuous Integration ([travis-ci.com](https://travis-ci.com)). ```travis.yml```
- 1. Disciple.Tools Theme presence check. ```disciple_tools_bulk_contact_messages()```
+ 1. Disciple.Tools Theme presence check. ```disciple_tools_bulk_contact_messaging()```
  1. Remote upgrade system for ongoing updates outside the Wordpress Directory.
  1. Multilingual support. ```/languages``` & ```default.pot```
 
@@ -51,11 +51,11 @@ __This plugin is for developers__ who want to extend the Disciple.Tools system f
 ## Contribution
 
 Contributions welcome. You can report issues and bugs in the
-[Issues](https://github.com/DiscipleTools/disciple-tools-bulk-contact-messages/issues) section of the repo. You can present ideas
-in the [Discussions](https://github.com/DiscipleTools/disciple-tools-bulk-contact-messages/discussions) section of the repo. And
-code contributions are welcome using the [Pull Request](https://github.com/DiscipleTools/disciple-tools-bulk-contact-messages/pulls)
+[Issues](https://github.com/DiscipleTools/disciple-tools-bulk-contact-messaging/issues) section of the repo. You can present ideas
+in the [Discussions](https://github.com/DiscipleTools/disciple-tools-bulk-contact-messaging/discussions) section of the repo. And
+code contributions are welcome using the [Pull Request](https://github.com/DiscipleTools/disciple-tools-bulk-contact-messaging/pulls)
 system for git. For a more details on contribution see the
-[contribution guidelines](https://github.com/DiscipleTools/disciple-tools-bulk-contact-messages/blob/master/CONTRIBUTING.md).
+[contribution guidelines](https://github.com/DiscipleTools/disciple-tools-bulk-contact-messaging/blob/master/CONTRIBUTING.md).
 
 ## Screenshots
 

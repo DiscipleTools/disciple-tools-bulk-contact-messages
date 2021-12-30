@@ -2,4 +2,4 @@
 {translation-domain}-{localisation}.po
 
 ex:
-disciple-tools-bulk-contact-messages-fr_FR.po
+disciple-tools-bulk-contact-messaging-fr_FR.po

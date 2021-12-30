@@ -35,11 +35,11 @@ Purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose 
 ## Contribution
 
 Contributions welcome. You can report issues and bugs in the
-[Issues](https://github.com/DiscipleTools/disciple-tools-bulk-contact-messages/issues) section of the repo. You can present ideas
-in the [Discussions](https://github.com/DiscipleTools/disciple-tools-bulk-contact-messages/discussions) section of the repo. And
-code contributions are welcome using the [Pull Request](https://github.com/DiscipleTools/disciple-tools-bulk-contact-messages/pulls)
+[Issues](https://github.com/DiscipleTools/disciple-tools-bulk-contact-messaging/issues) section of the repo. You can present ideas
+in the [Discussions](https://github.com/DiscipleTools/disciple-tools-bulk-contact-messaging/discussions) section of the repo. And
+code contributions are welcome using the [Pull Request](https://github.com/DiscipleTools/disciple-tools-bulk-contact-messaging/pulls)
 system for git. For a more details on contribution see the
-[contribution guidelines](https://github.com/DiscipleTools/disciple-tools-bulk-contact-messages/blob/master/CONTRIBUTING.md).
+[contribution guidelines](https://github.com/DiscipleTools/disciple-tools-bulk-contact-messaging/blob/master/CONTRIBUTING.md).
 
 
 ## Screenshots

@@ -3,10 +3,10 @@
 class PluginTest extends TestCase
 {
     public function test_plugin_installed() {
-        activate_plugin( 'disciple-tools-bulk-contact-messages/disciple-tools-bulk-contact-messages.php' );
+        activate_plugin( 'disciple-tools-bulk-contact-messaging/disciple-tools-bulk-contact-messaging.php' );
 
         $this->assertContains(
-            'disciple-tools-bulk-contact-messages/disciple-tools-bulk-contact-messages.php',
+            'disciple-tools-bulk-contact-messaging/disciple-tools-bulk-contact-messaging.php',
             get_option( 'active_plugins' )
         );
     }

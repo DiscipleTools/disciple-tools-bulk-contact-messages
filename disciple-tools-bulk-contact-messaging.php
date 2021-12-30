@@ -1,13 +1,13 @@
 <?php
 /**
  * Plugin Name: Disciple.Tools - Bulk Contact Messages
- * Plugin URI: https://github.com/DiscipleTools/disciple-tools-bulk-contact-messages
+ * Plugin URI: https://github.com/DiscipleTools/disciple-tools-bulk-contact-messaging
  * Description: Disciple.Tools - Bulk Contact Messages adds a feature to the contact lists page to send bulk messages to selected list of contacts.
- * Text Domain: disciple-tools-bulk-contact-messages
+ * Text Domain: disciple-tools-bulk-contact-messaging
  * Domain Path: /languages
  * Version:  0.1
  * Author URI: https://github.com/DiscipleTools
- * GitHub Plugin URI: https://github.com/DiscipleTools/disciple-tools-bulk-contact-messages
+ * GitHub Plugin URI: https://github.com/DiscipleTools/disciple-tools-bulk-contact-messaging
  * Requires at least: 4.7.0
  * (Requires 4.7+ because of the integration of the REST API at 4.7 and the security requirements of this milestone version.)
  * Tested up to: 5.6
@@ -23,14 +23,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Gets the instance of the `Disciple_Tools_Bulk_Contact_Messages` class.
+ * Gets the instance of the `Disciple_Tools_Bulk_Contact_Messaging` class.
  *
  * @since  0.1
  * @access public
  * @return object|bool
  */
-function disciple_tools_bulk_contact_messages() {
-    $disciple_tools_bulk_contact_messages_required_dt_theme_version = '1.19';
+function disciple_tools_bulk_contact_messaging() {
+    $disciple_tools_bulk_contact_messaging_required_dt_theme_version = '1.19';
     $wp_theme = wp_get_theme();
     $version = $wp_theme->version;
 
@@ -38,8 +38,8 @@ function disciple_tools_bulk_contact_messages() {
      * Check if the Disciple.Tools theme is loaded and is the latest required version
      */
     $is_theme_dt = class_exists( "Disciple_Tools" );
-    if ( $is_theme_dt && version_compare( $version, $disciple_tools_bulk_contact_messages_required_dt_theme_version, "<" ) ) {
-        add_action( 'admin_notices', 'disciple_tools_bulk_contact_messages_hook_admin_notice' );
+    if ( $is_theme_dt && version_compare( $version, $disciple_tools_bulk_contact_messaging_required_dt_theme_version, "<" ) ) {
+        add_action( 'admin_notices', 'disciple_tools_bulk_contact_messaging_hook_admin_notice' );
         add_action( 'wp_ajax_dismissed_notice_handler', 'dt_hook_ajax_notice_handler' );
         return false;
     }
@@ -53,10 +53,10 @@ function disciple_tools_bulk_contact_messages() {
         require_once get_template_directory() . '/dt-core/global-functions.php';
     }
 
-    return Disciple_Tools_Bulk_Contact_Messages::instance();
+    return Disciple_Tools_Bulk_Contact_Messaging::instance();
 
 }
-add_action( 'after_setup_theme', 'disciple_tools_bulk_contact_messages', 20 );
+add_action( 'after_setup_theme', 'disciple_tools_bulk_contact_messaging', 20 );
 
 /**
  * Singleton class for setting up the plugin.
@@ -64,7 +64,7 @@ add_action( 'after_setup_theme', 'disciple_tools_bulk_contact_messages', 20 );
  * @since  0.1
  * @access public
  */
-class Disciple_Tools_Bulk_Contact_Messages {
+class Disciple_Tools_Bulk_Contact_Messaging {
 
     private static $_instance = null;
     public static function instance() {
@@ -137,7 +137,7 @@ class Disciple_Tools_Bulk_Contact_Messages {
      */
     public static function deactivation() {
         // add functions here that need to happen on deactivation
-        delete_option( 'dismissed-disciple-tools-bulk-contact-messages' );
+        delete_option( 'dismissed-disciple-tools-bulk-contact-messaging' );
     }
 
     /**
@@ -148,7 +148,7 @@ class Disciple_Tools_Bulk_Contact_Messages {
      * @return void
      */
     public function i18n() {
-        $domain = 'disciple-tools-bulk-contact-messages';
+        $domain = 'disciple-tools-bulk-contact-messaging';
         load_plugin_textdomain( $domain, false, trailingslashit( dirname( plugin_basename( __FILE__ ) ) ). 'languages' );
     }
 
@@ -160,7 +160,7 @@ class Disciple_Tools_Bulk_Contact_Messages {
      * @return string
      */
     public function __toString() {
-        return 'disciple-tools-bulk-contact-messages';
+        return 'disciple-tools-bulk-contact-messaging';
     }
 
     /**
@@ -195,7 +195,7 @@ class Disciple_Tools_Bulk_Contact_Messages {
      * @access public
      */
     public function __call( $method = '', $args = array() ) {
-        _doing_it_wrong( "disciple_tools_bulk_contact_messages::" . esc_html( $method ), 'Method does not exist.', '0.1' );
+        _doing_it_wrong( "disciple_tools_bulk_contact_messaging::" . esc_html( $method ), 'Method does not exist.', '0.1' );
         unset( $method, $args );
         return null;
     }
@@ -203,32 +203,32 @@ class Disciple_Tools_Bulk_Contact_Messages {
 
 
 // Register activation hook.
-register_activation_hook( __FILE__, [ 'Disciple_Tools_Bulk_Contact_Messages', 'activation' ] );
-register_deactivation_hook( __FILE__, [ 'Disciple_Tools_Bulk_Contact_Messages', 'deactivation' ] );
+register_activation_hook( __FILE__, [ 'Disciple_Tools_Bulk_Contact_Messaging', 'activation' ] );
+register_deactivation_hook( __FILE__, [ 'Disciple_Tools_Bulk_Contact_Messaging', 'deactivation' ] );
 
 
-if ( ! function_exists( 'disciple_tools_bulk_contact_messages_hook_admin_notice' ) ) {
-    function disciple_tools_bulk_contact_messages_hook_admin_notice() {
-        global $disciple_tools_bulk_contact_messages_required_dt_theme_version;
+if ( ! function_exists( 'disciple_tools_bulk_contact_messaging_hook_admin_notice' ) ) {
+    function disciple_tools_bulk_contact_messaging_hook_admin_notice() {
+        global $disciple_tools_bulk_contact_messaging_required_dt_theme_version;
         $wp_theme = wp_get_theme();
         $current_version = $wp_theme->version;
         $message = "'Disciple.Tools - List Email Sender' plugin requires 'Disciple.Tools' theme to work. Please activate 'Disciple.Tools' theme or make sure it is latest version.";
         if ( $wp_theme->get_template() === "disciple-tools-theme" ){
-            $message .= ' ' . sprintf( esc_html( 'Current Disciple.Tools version: %1$s, required version: %2$s' ), esc_html( $current_version ), esc_html( $disciple_tools_bulk_contact_messages_required_dt_theme_version ) );
+            $message .= ' ' . sprintf( esc_html( 'Current Disciple.Tools version: %1$s, required version: %2$s' ), esc_html( $current_version ), esc_html( $disciple_tools_bulk_contact_messaging_required_dt_theme_version ) );
         }
         // Check if it's been dismissed...
-        if ( ! get_option( 'dismissed-disciple-tools-bulk-contact-messages', false ) ) { ?>
-            <div class="notice notice-error notice-disciple-tools-bulk-contact-messages is-dismissible" data-notice="disciple-tools-bulk-contact-messages">
+        if ( ! get_option( 'dismissed-disciple-tools-bulk-contact-messaging', false ) ) { ?>
+            <div class="notice notice-error notice-disciple-tools-bulk-contact-messaging is-dismissible" data-notice="disciple-tools-bulk-contact-messaging">
                 <p><?php echo esc_html( $message );?></p>
             </div>
             <script>
                 jQuery(function($) {
-                    $( document ).on( 'click', '.notice-disciple-tools-bulk-contact-messages .notice-dismiss', function () {
+                    $( document ).on( 'click', '.notice-disciple-tools-bulk-contact-messaging .notice-dismiss', function () {
                         $.ajax( ajaxurl, {
                             type: 'POST',
                             data: {
                                 action: 'dismissed_notice_handler',
-                                type: 'disciple-tools-bulk-contact-messages',
+                                type: 'disciple-tools-bulk-contact-messaging',
                                 security: '<?php echo esc_html( wp_create_nonce( 'wp_rest_dismiss' ) ) ?>'
                             }
                         })
@@ -260,7 +260,7 @@ if ( !function_exists( "dt_hook_ajax_notice_handler" ) ){
  * This section runs the remote plugin updating service, so you can issue distributed updates to your plugin
  *
  * @note See the instructions for version updating to understand the steps involved.
- * @link https://github.com/DiscipleTools/disciple-tools-bulk-contact-messages/wiki/Configuring-Remote-Updating-System
+ * @link https://github.com/DiscipleTools/disciple-tools-bulk-contact-messaging/wiki/Configuring-Remote-Updating-System
  *
  * @todo Enable this section with your own hosted file
  * @todo An example of this file can be found in (version-control.json)
@@ -285,9 +285,9 @@ if ( !function_exists( "dt_hook_ajax_notice_handler" ) ){
 //        }
 //        if ( class_exists( 'Puc_v4_Factory' ) ){
 //            Puc_v4_Factory::buildUpdateChecker(
-//                'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-bulk-contact-messages/master/version-control.json',
+//                'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-bulk-contact-messaging/master/version-control.json',
 //                __FILE__,
-//                'disciple-tools-bulk-contact-messages'
+//                'disciple-tools-bulk-contact-messaging'
 //            );
 //
 //        }
