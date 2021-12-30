@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Disciple.Tools - Bulk Contact Messages
+ * Plugin Name: Disciple.Tools - Bulk Contact Messaging
  * Plugin URI: https://github.com/DiscipleTools/disciple-tools-bulk-contact-messaging
  * Description: Disciple.Tools - Bulk Contact Messages adds a feature to the contact lists page to send bulk messages to selected list of contacts.
  * Text Domain: disciple-tools-bulk-contact-messaging
@@ -75,31 +75,19 @@ class Disciple_Tools_Bulk_Contact_Messaging {
     }
 
     private function __construct() {
-        require_once( 'list/list-item.php' );
 
-//        /**
-//         * @todo Decide if you want to add a custom admin page in the admin area
-//         * To remove: delete the 3 lines below and remove the folder named /admin
-//         */
-//        if ( is_admin() ) {
-//            require_once( 'admin/admin-menu-and-tabs.php' ); // adds starter admin page and section for plugin
-//        }
+        require_once( 'includes/bulk-list-extension.php' );
+        require_once( 'includes/rest-api.php' );
 
-        /**
-         * @todo Decide if you want to support localization of your plugin
-         * To remove: delete the line below and remove the folder named /languages
-         */
+        if ( is_admin() ) {
+            require_once( 'admin/admin-menu-and-tabs.php' ); // adds starter admin page and section for plugin
+        }
+
         $this->i18n();
 
-        /**
-         * @todo Decide if you want to customize links for your plugin in the plugin admin area
-         * To remove: delete the lines below and remove the function named "plugin_description_links"
-         */
         if ( is_admin() ) { // adds links to the plugin description area in the plugin admin list.
             add_filter( 'plugin_row_meta', [ $this, 'plugin_description_links' ], 10, 4 );
         }
-
-
     }
 
     /**
