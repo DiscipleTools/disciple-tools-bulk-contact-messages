@@ -78,6 +78,8 @@ class Disciple_Tools_Bulk_Contact_Messaging {
 
         require_once( 'includes/bulk-list-extension.php' );
         require_once( 'includes/rest-api.php' );
+        require_once( 'includes/service-email.php' );
+        require_once( 'includes/service-twilio.php' );
 
         if ( is_admin() ) {
             require_once( 'admin/admin-menu-and-tabs.php' ); // adds starter admin page and section for plugin

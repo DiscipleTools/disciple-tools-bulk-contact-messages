@@ -38,7 +38,7 @@ if ( 'contacts' === dt_get_post_type() ) {
         ?>
         <div id="bulk_send_message_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
             <p style="font-weight:bold"><?php
-                echo sprintf( esc_html__( 'Select all the %1$s to whom you want to send emails.', 'disciple_tools' ), esc_html( $post_type ) );?></p>
+                echo sprintf( esc_html__( 'Select all the %1$s to whom you want to message.', 'disciple_tools' ), esc_html( $post_type ) );?></p>
             <div class="grid-x grid-margin-x">
                 <div class="cell">
                     <label for="bulk_send_message_note"><?php echo esc_html__( 'Reply to', 'disciple_tools' ); ?></label>

@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 class Disciple_Tools_Bulk_Contact_Messaging_Menu {
 
     public $token = 'disciple_tools_bulk_contact_messaging';
-    public $page_title = 'List Email Sender';
+    public $page_title = 'Bulk Contact Messaging';
 
     private static $_instance = null;
 
@@ -66,28 +66,28 @@ class Disciple_Tools_Bulk_Contact_Messaging_Menu {
         if ( isset( $_GET["tab"] ) ) {
             $tab = sanitize_key( wp_unslash( $_GET["tab"] ) );
         } else {
-            $tab = 'general';
+            $tab = 'email';
         }
 
         $link = 'admin.php?page='.$this->token.'&tab=';
 
         ?>
         <div class="wrap">
-            <h2>List Email Sender</h2>
+            <h2><?php echo esc_html( $this->page_title ) ?></h2>
             <h2 class="nav-tab-wrapper">
-                <a href="<?php echo esc_attr( $link ) . 'general' ?>"
-                   class="nav-tab <?php echo esc_html( ( $tab == 'general' || !isset( $tab ) ) ? 'nav-tab-active' : '' ); ?>">General</a>
-                <a href="<?php echo esc_attr( $link ) . 'second' ?>" class="nav-tab <?php echo esc_html( ( $tab == 'second' || !isset( $tab ) ) ? 'nav-tab-active' : '' ); ?>">Second</a>
+                <a href="<?php echo esc_attr( $link ) . 'email' ?>"
+                   class="nav-tab <?php echo esc_html( ( $tab == 'email' || !isset( $tab ) ) ? 'nav-tab-active' : '' ); ?>">Email</a>
+                <a href="<?php echo esc_attr( $link ) . 'twilio' ?>" class="nav-tab <?php echo esc_html( ( $tab == 'twilio' ) ? 'nav-tab-active' : '' ); ?>">Twilio</a>
             </h2>
 
             <?php
             switch ( $tab ) {
-                case "general":
-                    $object = new Disciple_Tools_Bulk_Contact_Messaging_Tab_General();
+                case "email":
+                    $object = new DT_Bulk_Contact_Messaging_Tab_Email();
                     $object->content();
                     break;
-                case "second":
-                    $object = new Disciple_Tools_Bulk_Contact_Messaging_Tab_Second();
+                case "twilio":
+                    $object = new DT_Bulk_Contact_Messaging_Tab_Twilio();
                     $object->content();
                     break;
                 default:
@@ -103,9 +103,9 @@ class Disciple_Tools_Bulk_Contact_Messaging_Menu {
 Disciple_Tools_Bulk_Contact_Messaging_Menu::instance();
 
 /**
- * Class Disciple_Tools_Bulk_Contact_Messaging_Tab_General
+ * Class DT_Bulk_Contact_Messaging_Tab_Email
  */
-class Disciple_Tools_Bulk_Contact_Messaging_Tab_General {
+class DT_Bulk_Contact_Messaging_Tab_Email {
     public function content() {
         ?>
         <div class="wrap">
@@ -180,9 +180,9 @@ class Disciple_Tools_Bulk_Contact_Messaging_Tab_General {
 
 
 /**
- * Class Disciple_Tools_Bulk_Contact_Messaging_Tab_Second
+ * Class DT_Bulk_Contact_Messaging_Tab_Twilio
  */
-class Disciple_Tools_Bulk_Contact_Messaging_Tab_Second {
+class DT_Bulk_Contact_Messaging_Tab_Twilio {
     public function content() {
         ?>
         <div class="wrap">
