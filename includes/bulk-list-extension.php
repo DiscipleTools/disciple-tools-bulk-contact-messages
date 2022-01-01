@@ -30,12 +30,20 @@ if ( 'contacts' === dt_get_post_type() ) {
      */
     add_action( 'dt_post_bulk_list_section', 'dt_post_bulk_list_section_messages', 30, 3 );
     function dt_post_bulk_list_section_messages( $post_type, $post_settings, $dt_magic_apps ){
-        $dt_message_methods = apply_filters( 'dt_message_methods', [
+        $dt_message_methods = [
             'email' => [
                 'key' => 'email',
                 'label' => 'Email'
             ]
-        ] );
+        ];
+        $options = dt_bulk_contact_messaging_options();
+        if ( isset( $options['twilio_sid'], $options['twilio_auth'], $options['twilio_number'] ) ) {
+            $dt_message_methods['sms'] =  [
+                'key' => 'sms',
+                'label' => 'Text Message'
+            ];
+        }
+
         $dt_user = get_user_meta(get_current_user_id());
         ?>
         <div id="bulk_contact_messaging_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
@@ -54,14 +62,14 @@ if ( 'contacts' === dt_get_post_type() ) {
                                 $checked = true;
                             }
                             ?>
-                            <input type="radio" id="bulk_contact_messaging_method<?php echo $type['key'] ?>" value="<?php echo $type['key'] ?>" name="message_type" <?php echo ( $checked) ? 'checked': ''; ?>>
+                            <input type="radio" id="bulk_contact_messaging_method<?php echo $type['key'] ?>" class="bulk_contact_messaging_method_input" value="<?php echo $type['key'] ?>" name="message_type" <?php echo ( $checked) ? 'checked': ''; ?>>
                             <label class="button" for="bulk_contact_messaging_method<?php echo $type['key'] ?>"><?php echo $type['label'] ?></label>
                             <?php
                         }
                         ?>
                     </div>
                 </div>
-                <div class="cell">
+                <div class="cell email-specific">
                     <label for="bulk_contact_messaging_from_address"><?php echo esc_html__( 'Send From', 'disciple_tools' ); ?></label>
                     <span id="bulk_contact_messaging_from_address" style="display:none;color:red;"><?php echo esc_html__( 'You must select an email', 'disciple_tools' ); ?></span>
                     <div class="bulk_contact_messaging_from_address dt-radio button-group toggle ">
@@ -77,7 +85,7 @@ if ( 'contacts' === dt_get_post_type() ) {
                         <?php endif; ?>
                     </div>
                 </div>
-                <div class="cell">
+                <div class="cell email-specific">
                     <label for="bulk_contact_messaging_subject"><?php echo esc_html__( 'Subject Line', 'disciple_tools' ); ?></label>
                     <input type="text" id="bulk_contact_messaging_subject" placeholder="<?php echo esc_html__( 'Add brief subject line.', 'disciple_tools' ); ?>" />
                 </div>
@@ -126,6 +134,15 @@ if ( 'contacts' === dt_get_post_type() ) {
                 jQuery('#bulk_contact_messaging_controls').on('click', function(){
                     jQuery('#bulk_contact_messaging_picker').toggle();
                     jQuery('#records-table').toggleClass('bulk_edit_on');
+                })
+
+                jQuery('.bulk_contact_messaging_method_input').on( 'click', function(){
+                    let sel = jQuery(this).val()
+                    if ( sel === 'email' ) {
+                        jQuery('.email-specific').show()
+                    } else {
+                        jQuery('.email-specific').hide()
+                    }
                 })
 
                 jQuery('#bulk_contact_messaging_submit').on('click', function(e) {

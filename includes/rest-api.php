@@ -91,10 +91,12 @@ class DT_Bulk_Contact_Messages_Endpoints
     public function bulk_messaging( WP_REST_Request $request ) {
         $params = $request->get_params();
 
+        $params = dt_recursive_sanitize_array( $params );
+
         if ( isset( $params['settings']['method'] ) && 'email' === $params['settings']['method'] ) {
             return DT_Bulk_Contact_Messaging_Email::send( $params );
         } else {
-//            return DT_Bulk_Contact_Messaging_Email_Default::send( $params );
+            return dt_send_bulk_twilio_message( $params );
         }
     }
 

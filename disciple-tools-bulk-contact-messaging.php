@@ -79,7 +79,7 @@ class Disciple_Tools_Bulk_Contact_Messaging {
         require_once( 'includes/bulk-list-extension.php' );
         require_once( 'includes/rest-api.php' );
         require_once( 'includes/email.php' );
-        require_once( 'includes/service-twilio.php' );
+        require_once( 'includes/twilio.php' );
 
         if ( is_admin() ) {
             require_once( 'admin/admin-menu-and-tabs.php' ); // adds starter admin page and section for plugin
@@ -270,14 +270,9 @@ function dt_bulk_contact_messaging_options() : array {
     $list = wp_parse_args( $saved, [
         'from_email' => '',
         'from_name' => '',
-        'service' => 'default',
-        'smtp_api_key' => '',
-        'smtp_name' => '',
-        'mailgun_api_key' => '',
-        'mailgun_name' => '',
-        'mailgun_region' => '',
-        'sendgrid_api_key' => '',
-        'sendgrid_name' => '',
+        'twilio_sid' => '',
+        'twilio_auth' => '',
+        'twilio_number' => '',
     ] );
 
     return $list;

@@ -180,49 +180,6 @@ class DT_Bulk_Contact_Messaging_Tab_Email {
                         <input type="text" name="from_name" class="regular-text" value="<?php echo esc_html( $options['from_name'] ) ?>" />
                     </td>
                 </tr>
-                <!--
-                <tr>
-                    <td>
-                        Mailer Service<br>
-                        <select name="service">
-                            <option value="default" <?php echo ( 'default' === $options['service'] ) ? 'selected' : '' ?>>PHP (default)</option>
-                            <option value="smtp_com" <?php echo ( 'smtp_com' === $options['service'] ) ? 'selected' : '' ?>>SMTP.com</option>
-                            <option value="mailgun" <?php echo ( 'mailgun' === $options['service'] ) ? 'selected' : '' ?>>Mailgun</option>
-                            <option value="sendgrid" <?php echo ( 'sendgrid' === $options['service'] ) ? 'selected' : '' ?>>SendGrid</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr id="smtp-section">
-                    <td>
-                        <strong>SMTP.com</strong><br>
-                        API Key<br>
-                        <input type="text" name="smtp_api_key" class="regular-text" value="<?php echo esc_html( $options['smtp_api_key'] ) ?>" /><br>
-                        Sender Name<br>
-                        <input type="text" name="smtp_name" class="regular-text" value="<?php echo esc_html( $options['smtp_name'] ) ?>" /><br>
-                    </td>
-                </tr>
-                <tr id="mailgun-section">
-                    <td>
-                        <strong>Mailgun</strong><br>
-                        Private API Key<br>
-                        <input type="text" name="mailgun_api_key" class="regular-text" value="<?php echo esc_html( $options['mailgun_api_key'] ) ?>" /><br>
-                        Domain Name<br>
-                        <input type="text" name="mailgun_name" class="regular-text" value="<?php echo esc_html( $options['mailgun_name'] ) ?>" /><br>
-                        Region<br>
-                        <input type="radio" name="mailgun_region" value="US" <?php echo ( 'US' === $options['mailgun_region'] ) ? 'checked' : '' ?> />US<br>
-                        <input type="radio" name="mailgun_region" value="EU" <?php echo ( 'EU' === $options['mailgun_region'] ) ? 'checked' : '' ?> />Europe<br>
-                    </td>
-                </tr>
-                <tr id="sendgrid-section">
-                    <td>
-                        <strong>SendGrid</strong><br>
-                        API Key<br>
-                        <input type="text" name="sendgrid_api_key" class="regular-text" value="<?php echo esc_html( $options['sendgrid_api_key'] ) ?>" /><br>
-                        Sender Domain<br>
-                        <input type="text" name="sendgrid_name" class="regular-text" value="<?php echo esc_html( $options['sendgrid_name'] ) ?>" /><br>
-                    </td>
-                </tr>
-                -->
                 <tr>
                     <td>
                         <button type="submit" class="button">Update</button>
@@ -236,10 +193,7 @@ class DT_Bulk_Contact_Messaging_Tab_Email {
         <?php
     }
 
-    public function right_column()
-    {
-
-
+    public function right_column() {
     }
 }
 
@@ -276,47 +230,59 @@ class DT_Bulk_Contact_Messaging_Tab_Twilio {
     }
 
     public function main_column() {
+        $options = dt_bulk_contact_messaging_options(); dt_write_log($_POST);
+
+        if ( isset( $_POST['bulk_contact_messaging_twilio_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['bulk_contact_messaging_twilio_nonce'] ) ), 'bulk_contact_messaging_twilio_nonce'.get_current_user_id() ) ) {
+            unset($_POST['bulk_contact_messaging_twilio_nonce']);
+            $new_options = dt_recursive_sanitize_array( $_POST );
+            $new_options = wp_parse_args( $new_options, $options );
+            update_option('dt_bulk_contact_messaging_options', $new_options );
+            $options = $new_options;
+        }
         ?>
         <!-- Box -->
-        <table class="widefat striped">
-            <thead>
+        <form method="post">
+            <?php wp_nonce_field( 'bulk_contact_messaging_twilio_nonce'.get_current_user_id(), 'bulk_contact_messaging_twilio_nonce', false ) ?>
+            <table class="widefat striped">
+                <thead>
                 <tr>
-                    <th>Header</th>
+                    <th>Bulk Email Settings</th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 <tr>
                     <td>
-                        Content
+                        Account SID<br>
+                        <input type="text" name="twilio_sid" class="regular-text" value="<?php echo esc_html( $options['twilio_sid'] ) ?>"/>
                     </td>
                 </tr>
-            </tbody>
-        </table>
+                <tr>
+                    <td>
+                        Auth Token<br>
+                        <input type="text" name="twilio_auth" class="regular-text" value="<?php echo esc_html( $options['twilio_auth'] ) ?>" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Twilio Number<br>
+                        <input type="text" name="twilio_number" class="regular-text" value="<?php echo esc_html( $options['twilio_number'] ) ?>" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="submit" class="button">Update</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
         <br>
         <!-- End Box -->
         <?php
     }
 
     public function right_column() {
-        ?>
-        <!-- Box -->
-        <table class="widefat striped">
-            <thead>
-                <tr>
-                    <th>Information</th>
-                </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>
-                    Content
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <br>
-        <!-- End Box -->
-        <?php
+
     }
 }
 
