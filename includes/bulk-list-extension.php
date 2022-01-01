@@ -7,8 +7,8 @@ if ( 'contacts' === dt_get_post_type() ) {
     /**
      * Removes core send utility and upgrades it.
      */
-    remove_action('dt_post_bulk_list_link','dt_post_bulk_list_link_apps', 20 );
-    remove_action('dt_post_bulk_list_section','dt_post_bulk_list_section_apps', 20 );
+    remove_action( 'dt_post_bulk_list_link', 'dt_post_bulk_list_link_apps', 20 );
+    remove_action( 'dt_post_bulk_list_section', 'dt_post_bulk_list_section_apps', 20 );
 
     /**
      * Adds link
@@ -38,13 +38,13 @@ if ( 'contacts' === dt_get_post_type() ) {
         ];
         $options = dt_bulk_contact_messaging_options();
         if ( isset( $options['twilio_sid'], $options['twilio_auth'], $options['twilio_number'] ) ) {
-            $dt_message_methods['sms'] =  [
+            $dt_message_methods['sms'] = [
                 'key' => 'sms',
                 'label' => 'Text Message'
             ];
         }
 
-        $dt_user = get_user_meta(get_current_user_id());
+        $dt_user = get_user_meta( get_current_user_id() );
         ?>
         <div id="bulk_contact_messaging_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc; margin: 30px 0">
             <p style="font-weight:bold"><?php
@@ -56,13 +56,13 @@ if ( 'contacts' === dt_get_post_type() ) {
                     <span id="bulk_contact_messaging_method" style="display:none;color:red;"><?php echo esc_html__( 'You must select an app', 'disciple_tools' ); ?></span>
                     <div class="bulk_contact_messaging_method dt-radio button-group toggle ">
                         <?php
-                        foreach( $dt_message_methods as $type ) {
+                        foreach ( $dt_message_methods as $type ) {
                             $checked = false;
-                            if ( $type['key'] === 'email') {
+                            if ( $type['key'] === 'email' ) {
                                 $checked = true;
                             }
                             ?>
-                            <input type="radio" id="bulk_contact_messaging_method<?php echo $type['key'] ?>" class="bulk_contact_messaging_method_input" value="<?php echo $type['key'] ?>" name="message_type" <?php echo ( $checked) ? 'checked': ''; ?>>
+                            <input type="radio" id="bulk_contact_messaging_method<?php echo $type['key'] ?>" class="bulk_contact_messaging_method_input" value="<?php echo $type['key'] ?>" name="message_type" <?php echo ( $checked ) ? 'checked' : ''; ?>>
                             <label class="button" for="bulk_contact_messaging_method<?php echo $type['key'] ?>"><?php echo $type['label'] ?></label>
                             <?php
                         }

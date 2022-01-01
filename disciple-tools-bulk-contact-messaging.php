@@ -246,7 +246,7 @@ add_action( 'plugins_loaded', function (){
     if ( is_admin() && !( is_multisite() && class_exists( "DT_Multisite" ) ) || wp_doing_cron() ){
         // Check for plugin updates
         if ( ! class_exists( 'Puc_v4_Factory' ) ) {
-            if ( file_exists( get_template_directory() . '/dt-core/libraries/plugin-update-checker/plugin-update-checker.php' )){
+            if ( file_exists( get_template_directory() . '/dt-core/libraries/plugin-update-checker/plugin-update-checker.php' ) ){
                 require( get_template_directory() . '/dt-core/libraries/plugin-update-checker/plugin-update-checker.php' );
             }
         }
@@ -262,7 +262,7 @@ add_action( 'plugins_loaded', function (){
 } );
 
 function dt_bulk_contact_messaging_options() : array {
-    $saved = get_option('dt_bulk_contact_messaging_options' );
+    $saved = get_option( 'dt_bulk_contact_messaging_options' );
     if ( empty( $saved ) ) {
         $saved = [];
     }

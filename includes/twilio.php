@@ -3,7 +3,7 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 // @todo add custom email sending service
 
-add_filter( 'dt_message_methods', function($list){
+add_filter( 'dt_message_methods', function( $list ){
     $list['twilio'] = [
         'key' => 'twilio',
         'label' => 'Text Message'
@@ -65,7 +65,7 @@ function dt_send_bulk_twilio_message( $params ) {
     $send_errors = [];
     $success = [];
 
-    $client = new Client($account_sid, $auth_token);
+    $client = new Client( $account_sid, $auth_token );
 
     foreach ( $params['post_ids'] as $post_id ) {
         $unique_message = $message;
@@ -106,7 +106,7 @@ function dt_send_bulk_twilio_message( $params ) {
             )
         );
 
-        dt_write_log($result);
+        dt_write_log( $result );
 
         $success[] = $post_id;
     }

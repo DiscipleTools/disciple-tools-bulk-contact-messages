@@ -50,7 +50,7 @@ class DT_Bulk_Contact_Messaging_Email {
 
         $options = dt_bulk_contact_messaging_options();
 
-        $base_subject = get_option('dt_email_base_subject');
+        $base_subject = get_option( 'dt_email_base_subject' );
         if ( 'default' === $params['settings']['send_from'] ) {
             $from_name = $base_subject;
             if ( ! empty( $options['from_name'] ) ) {
@@ -64,7 +64,7 @@ class DT_Bulk_Contact_Messaging_Email {
             }
         }
 
-        $from_email = get_bloginfo('admin_email');
+        $from_email = get_bloginfo( 'admin_email' );
         if ( ! empty( $options['from_email'] ) ) {
             $from_email = $options['from_email'];
         }
@@ -166,7 +166,7 @@ class DT_Bulk_Contact_Messaging_Email {
             try {
                 $phpmailer->setFrom( $from_email, $from_name, false );
             } catch ( PHPMailer\PHPMailer\Exception $e ) {
-                dt_write_log($e);
+                dt_write_log( $e );
                 return false;
             }
         }
@@ -175,7 +175,7 @@ class DT_Bulk_Contact_Messaging_Email {
             try {
                 $phpmailer->addReplyTo( $from_email, $from_name );
             } catch ( PHPMailer\PHPMailer\Exception $e ) {
-                dt_write_log($e);
+                dt_write_log( $e );
                 return false;
             }
         }
@@ -196,7 +196,7 @@ class DT_Bulk_Contact_Messaging_Email {
         try {
             return $phpmailer->send();
         } catch ( PHPMailer\PHPMailer\Exception $e ) {
-            dt_write_log($e);
+            dt_write_log( $e );
             return false;
         }
     }

@@ -49,8 +49,6 @@ class Disciple_Tools_Bulk_Contact_Messaging_Menu {
         //$phpmailer->SMTPSecure = 'tls'; // Choose 'ssl' for SMTPS on port 465, or 'tls' for SMTP+STARTTLS on port 25 or 587
         //$phpmailer->From = "you@yourdomail.com";
         //$phpmailer->FromName = "Your Name";
-
-
     }
 
 
@@ -151,10 +149,10 @@ class DT_Bulk_Contact_Messaging_Tab_Email {
         $options = dt_bulk_contact_messaging_options();
 
         if ( isset( $_POST['bulk_contact_messaging_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['bulk_contact_messaging_nonce'] ) ), 'bulk_contact_messaging_nonce'.get_current_user_id() ) ) {
-            unset($_POST['bulk_contact_messaging_nonce']);
+            unset( $_POST['bulk_contact_messaging_nonce'] );
             $new_options = dt_recursive_sanitize_array( $_POST );
             $new_options = wp_parse_args( $new_options, $options );
-            update_option('dt_bulk_contact_messaging_options', $new_options );
+            update_option( 'dt_bulk_contact_messaging_options', $new_options );
             $options = $new_options;
         }
         ?>
@@ -230,13 +228,13 @@ class DT_Bulk_Contact_Messaging_Tab_Twilio {
     }
 
     public function main_column() {
-        $options = dt_bulk_contact_messaging_options(); dt_write_log($_POST);
+        $options = dt_bulk_contact_messaging_options();
 
         if ( isset( $_POST['bulk_contact_messaging_twilio_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['bulk_contact_messaging_twilio_nonce'] ) ), 'bulk_contact_messaging_twilio_nonce'.get_current_user_id() ) ) {
-            unset($_POST['bulk_contact_messaging_twilio_nonce']);
+            unset( $_POST['bulk_contact_messaging_twilio_nonce'] );
             $new_options = dt_recursive_sanitize_array( $_POST );
             $new_options = wp_parse_args( $new_options, $options );
-            update_option('dt_bulk_contact_messaging_options', $new_options );
+            update_option( 'dt_bulk_contact_messaging_options', $new_options );
             $options = $new_options;
         }
         ?>
