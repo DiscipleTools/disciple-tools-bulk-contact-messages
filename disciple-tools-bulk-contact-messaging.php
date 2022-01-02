@@ -5,12 +5,12 @@
  * Description: Disciple.Tools - Bulk Contact Messages adds a feature to the contact lists page to send bulk messages to selected list of contacts.
  * Text Domain: disciple-tools-bulk-contact-messaging
  * Domain Path: /languages
- * Version:  0.1
+ * Version:  1.0
  * Author URI: https://github.com/DiscipleTools
  * GitHub Plugin URI: https://github.com/DiscipleTools/disciple-tools-bulk-contact-messaging
  * Requires at least: 4.7.0
  * (Requires 4.7+ because of the integration of the REST API at 4.7 and the security requirements of this milestone version.)
- * Tested up to: 5.6
+ * Tested up to: 5.8
  *
  * @package Disciple_Tools
  * @link    https://github.com/DiscipleTools
