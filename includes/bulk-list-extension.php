@@ -37,7 +37,7 @@ if ( 'contacts' === dt_get_post_type() ) {
             ]
         ];
         $options = dt_bulk_contact_messaging_options();
-        if ( isset( $options['twilio_sid'], $options['twilio_auth'], $options['twilio_number'] ) ) {
+        if ( isset( $options['twilio_sid'], $options['twilio_auth'], $options['twilio_number'] ) && ! empty( $options['twilio_sid'] ) ) {
             $dt_message_methods['sms'] = [
                 'key' => 'sms',
                 'label' => 'Text Message'
@@ -50,7 +50,6 @@ if ( 'contacts' === dt_get_post_type() ) {
             <p style="font-weight:bold"><?php
                 echo sprintf( esc_html__( 'Select all the %1$s to whom you want to message.', 'disciple_tools' ), esc_html( $post_type ) );?></p>
             <div class="grid-x grid-margin-x">
-
                 <div class="cell">
                     <label for="bulk_contact_messaging_method"><?php echo esc_html__( 'Method', 'disciple_tools' ); ?></label>
                     <span id="bulk_contact_messaging_method" style="display:none;color:red;"><?php echo esc_html__( 'You must select an app', 'disciple_tools' ); ?></span>
@@ -62,8 +61,8 @@ if ( 'contacts' === dt_get_post_type() ) {
                                 $checked = true;
                             }
                             ?>
-                            <input type="radio" id="bulk_contact_messaging_method<?php echo $type['key'] ?>" class="bulk_contact_messaging_method_input" value="<?php echo $type['key'] ?>" name="message_type" <?php echo ( $checked ) ? 'checked' : ''; ?>>
-                            <label class="button" for="bulk_contact_messaging_method<?php echo $type['key'] ?>"><?php echo $type['label'] ?></label>
+                            <input type="radio" id="bulk_contact_messaging_method<?php echo esc_attr( $type['key'] ) ?>" class="bulk_contact_messaging_method_input" value="<?php echo esc_attr( $type['key'] ) ?>" name="message_type" <?php echo ( $checked ) ? 'checked' : ''; ?>>
+                            <label class="button" for="bulk_contact_messaging_method<?php echo esc_attr( $type['key'] ) ?>"><?php echo esc_html( $type['label'] ) ?></label>
                             <?php
                         }
                         ?>

@@ -131,16 +131,6 @@ class DT_Bulk_Contact_Messaging_Email {
         ];
     }
 
-    /**
-     * @global PHPMailer\PHPMailer\PHPMailer $phpmailer
-     *
-     * @param string|array $to          Array or comma-separated list of email addresses to send message.
-     * @param string       $subject     Email subject
-     * @param string       $message     Message contents
-     * @param string|array $headers     Optional. Additional headers.
-     * @param string|array $attachments Optional. Files to attach.
-     * @return bool Whether the email contents were sent successfully.
-     */
     public static function bulk_mail( $to_email, $to_name, $from_email, $from_name, $subject, $message ) {
         global $phpmailer;
 
@@ -149,7 +139,7 @@ class DT_Bulk_Contact_Messaging_Email {
             require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
             require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
             require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
-            $phpmailer = new PHPMailer\PHPMailer\PHPMailer( true );
+            $phpmailer = new PHPMailer\PHPMailer\PHPMailer( true ); // phpcs:ignore
 
             $phpmailer::$validator = static function ( $email ) {
                 return (bool) is_email( $email );
@@ -185,13 +175,14 @@ class DT_Bulk_Contact_Messaging_Email {
 
         $phpmailer->addAddress( $to_email, $to_name );
 
-
         // Set mail's subject and body.
+        // phpcs:disable
         $phpmailer->Subject = $subject;
         $phpmailer->Body    = $message;
         $phpmailer->ContentType = 'text/plain';
         $phpmailer->isHTML( false );
         $phpmailer->CharSet = get_bloginfo( 'charset' );
+        // phpcs:enable
 
         try {
             return $phpmailer->send();
