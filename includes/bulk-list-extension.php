@@ -68,8 +68,14 @@ if ( 'contacts' === dt_get_post_type() ) {
                         ?>
                     </div>
                 </div>
+                <?php if ( isset( $options['twilio_sid'], $options['twilio_auth'], $options['twilio_number'] ) && ! empty( $options['twilio_sid'] ) ) { ?>
+                    <div class="cell text-specific" style="display:none;">
+                        <label for="bulk_contact_messaging_from_address"><?php echo esc_html__( 'Sending From Phone Number', 'disciple_tools' ); ?></label>
+                        <p><?php echo esc_html( $options['twilio_number'] ) ?></p>
+                    </div>
+                <?php } ?>
                 <div class="cell email-specific">
-                    <label for="bulk_contact_messaging_from_address"><?php echo esc_html__( 'Send From', 'disciple_tools' ); ?></label>
+                    <label for="bulk_contact_messaging_from_address"><?php echo esc_html__( 'From Name', 'disciple_tools' ); ?></label>
                     <span id="bulk_contact_messaging_from_address" style="display:none;color:red;"><?php echo esc_html__( 'You must select an email', 'disciple_tools' ); ?></span>
                     <div class="bulk_contact_messaging_from_address dt-radio button-group toggle ">
                         <input type="radio" id="bulk_contact_messaging_from_address_none" name="send_from" value="default" checked>
@@ -139,8 +145,10 @@ if ( 'contacts' === dt_get_post_type() ) {
                     let sel = jQuery(this).val()
                     if ( sel === 'email' ) {
                         jQuery('.email-specific').show()
+                        jQuery('.text-specific').hide()
                     } else {
                         jQuery('.email-specific').hide()
+                        jQuery('.text-specific').show()
                     }
                 })
 
@@ -208,7 +216,7 @@ if ( 'contacts' === dt_get_post_type() ) {
                     makeRequest('POST', list_settings.post_type + '/bulk_messaging', { settings: settings, post_ids: queue } )
                         .done( data => {
                             jQuery('#bulk_contact_messaging_submit-spinner').removeClass('active')
-                            jQuery('#bulk_contact_messaging_submit-message').html(`<strong>${data.total_sent}</strong> ${list_settings.translations.sent}!<br><strong>${data.total_unsent}</strong> ${list_settings.translations.not_sent}`)
+                            jQuery('#bulk_contact_messaging_submit-message').html(`<strong>${data.total_sent}</strong> ${list_settings.translations.sent}!<br><strong>${data.total_unsent}</strong> not sent`)
                             jQuery('#bulk_edit_master_checkbox').prop("checked", false);
                             jQuery('.bulk_edit_checkbox input').prop("checked", false);
                             bulk_edit_count()
