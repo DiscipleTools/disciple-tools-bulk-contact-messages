@@ -91,7 +91,14 @@ class DT_Bulk_Contact_Messages_Endpoints
     public function bulk_messaging( WP_REST_Request $request ) {
         $params = $request->get_params();
 
+        $body = '';
+        if ( isset( $params['settings']['body'] ) && ! empty( $params['settings']['body'] ) ) {
+            $body = sanitize_textarea_field( $params['settings']['body'] );
+        }
+
         $params = dt_recursive_sanitize_array( $params );
+
+        $params['settings']['body'] = $body;
 
         if ( isset( $params['settings']['method'] ) && 'email' === $params['settings']['method'] ) {
             return DT_Bulk_Contact_Messaging_Email::send( $params );

@@ -45,7 +45,7 @@ class DT_Bulk_Contact_Messaging_Email {
         // prepare body
         $message = '';
         if ( isset( $params['settings']['body'] ) && ! empty( $params['settings']['body'] ) ) {
-            $message = $params['settings']['body'] . PHP_EOL;
+            $message = "" . $params['settings']['body'] . "" . PHP_EOL;
         }
 
         $options = dt_bulk_contact_messaging_options();
