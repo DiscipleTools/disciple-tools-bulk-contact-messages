@@ -35,13 +35,6 @@ class DT_Bulk_Contact_Messaging_Email {
             $app_selected = true;
         }
 
-        // prepare subject
-        if ( isset( $params['settings']['subject'] ) && ! empty( $params['settings']['subject'] ) ) {
-            $subject = $params['settings']['subject'];
-        } else {
-            $subject = '';
-        }
-
         // prepare body
         $message = '';
         if ( isset( $params['settings']['body'] ) && ! empty( $params['settings']['body'] ) ) {
@@ -62,6 +55,17 @@ class DT_Bulk_Contact_Messaging_Email {
             if ( ! empty( $options['from_name'] ) ) {
                 $from_name = $params['settings']['send_from'] . ' via ' . $options['from_name'];
             }
+        }
+
+        // prepare subject
+        if ( isset( $params['settings']['subject'] ) && ! empty( $params['settings']['subject'] ) ) {
+            $subject = $params['settings']['subject'];
+        }
+        else if ( ! empty( $base_subject ) ) {
+            $subject = 'Message from ' . $base_subject;
+        }
+        else {
+            $subject = 'Message from ' . $from_name;
         }
 
         $from_email = get_bloginfo( 'admin_email' );
@@ -103,7 +107,7 @@ class DT_Bulk_Contact_Messaging_Email {
                     $link = DT_Magic_URL::get_link_url( $root, $type, $post_record[$meta_key] );
                 }
 
-                $unique_message .= PHP_EOL . $name . ': this link<' . $link . '>';
+                $unique_message .= PHP_EOL . $name . ': <' . $link . '>';
             }
 
             $sent = self::bulk_mail( $to_address, $to_name, $from_email, $from_name, $subject, $unique_message );
