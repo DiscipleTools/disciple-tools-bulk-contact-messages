@@ -10,7 +10,7 @@ add_filter( 'dt_message_methods', function( $list ){
 });
 
 // https://www.twilio.com/docs/sms/quickstart/php
-require_once( plugin_dir_path( __DIR__ ) . '/vendor/autoload.php' );
+require_once( trailingslashit( plugin_dir_path( __DIR__ ) ) . 'vendor/autoload.php' );
 use Twilio\Rest\Client;
 
 function dt_send_bulk_twilio_message( $params ) {
