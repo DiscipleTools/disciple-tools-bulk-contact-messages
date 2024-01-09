@@ -99,8 +99,8 @@ function dt_post_bulk_list_section_messages( $post_type ){
             <div class="cell">
                 <label for="bulk_contact_messaging_app_link"><?php echo esc_html__( 'Add app link to message', 'disciple_tools' ); ?></label>
                 <span id="bulk_contact_messaging_app_link" style="display:none;color:red;"><?php echo esc_html__( 'You must select an app', 'disciple_tools' ); ?></span>
-                <div class="bulk_send_app dt-radio button-group toggle ">
-                    <input type="radio" id="no_app" data-root="" data-type="" name="app_link" checked>
+                <div class="bulk_send_app_link dt-radio button-group toggle">
+                    <input type="radio" id="no_app" data-root="" data-type="" name="app_link" >
                     <label class="button" for="no_app">No Link</label>
                     <?php
                     foreach ( $dt_magic_apps as $root ) {
@@ -172,7 +172,7 @@ function dt_post_bulk_list_section_messages( $post_type ){
 
                 let body = jQuery('#bulk_contact_messaging_body').val()
 
-                let app_input = jQuery('.bulk_send_app.dt-radio.button-group input:checked')
+                let app_input = jQuery('.bulk_send_app_link.dt-radio.button-group input:checked')
                 if ( app_input.length < 1 ) {
                     jQuery("#bulk_contact_messaging_app_link").show()
                     return
@@ -217,7 +217,7 @@ function dt_post_bulk_list_section_messages( $post_type ){
                         jQuery('#bulk_contact_messaging_submit-message').html(`<strong>${data.total_sent}</strong> ${list_settings.translations.sent}!<br><strong>${data.total_unsent}</strong> not sent`)
                         jQuery('#bulk_edit_master_checkbox').prop("checked", false);
                         jQuery('.bulk_edit_checkbox input').prop("checked", false);
-                        bulk_edit_count()
+                        // bulk_edit_count()
                         console.log(data)
                         // window.location.reload();
                     })
